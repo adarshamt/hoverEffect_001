@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .media-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  padding: 50px;
+}
+
+.media-btn {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background: #000;
+  color: white;
+  font-size: 24px;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.media-btn span {
+  font-size: 12px;
+}
+
+.media-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(0, 123, 255, 0.25), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+body{
+  background: #333;
+}
+
+    </style>
+    
+<center> <h1 style="color: aliceblue;">hover effect</h1></center>
+    <div class="media-controls">
+        <div class="media-btn">⟲<span>10</span></div>
+        <div class="media-btn">⏸</div>
+        <div class="media-btn">↻<span>30</span></div>
+      </div>
+      <center> <p style="color: aliceblue;"> hover the buttos to see the effect </p></center>
+
+      <script>
+        const buttons = document.querySelectorAll('.media-btn');
+      
+        document.addEventListener('mousemove', (e) => {
+          buttons.forEach(btn => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+      
+            // Get distance from center
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
+      
+            const maxDistance = 150;
+            const proximity = Math.max(0, 1 - distance / maxDistance);
+      
+            btn.style.setProperty('--mouse-x', `${x}px`);
+            btn.style.setProperty('--mouse-y', `${y}px`);
+      
+            const overlay = btn.querySelector('::before');
+            btn.style.setProperty('--glow-opacity', proximity.toFixed(2));
+            btn.style.setProperty('--glow-position', `${x}px ${y}px`);
+      
+            btn.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(0,255,255,${proximity * 0.3}), transparent 80%)`;
+          });
+        });
+      </script>
+      
+      
+</body>
+</html>

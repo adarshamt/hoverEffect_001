@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <style>
+        .media-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  padding: 40px;
+}
+
+.media-btn {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background: #000;
+  color: white;
+  font-size: 24px;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.media-btn span {
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.media-btn::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 4px;
+  box-shadow: none;
+  transition: box-shadow 0.1s ease;
+}
+
+        
+    </style>
+
+<div class="media-controls">
+    <div class="media-btn">⟲<span>10</span></div>
+    <div class="media-btn">⏸</div>
+    <div class="media-btn">↻<span>30</span></div>
+  </div>
+  
+      
+  <script>
+    const buttons = document.querySelectorAll('.side_content li');
+    
+    document.addEventListener('mousemove', (e) => {
+      buttons.forEach(btn => {
+        const rect = btn.getBoundingClientRect();
+        const dx = e.clientX - (rect.left + rect.width / 2);
+        const dy = e.clientY - (rect.top + rect.height / 2);
+        const distance = Math.sqrt(dx * dx + dy * dy);
+    
+        // Only activate if mouse is near the button (within 100px radius)
+        if (distance < 100) {
+          const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+          const glowX = Math.cos(angle * Math.PI / 180) * 10;
+          const glowY = Math.sin(angle * Math.PI / 180) * 10;
+    
+          btn.style.borderColor = '#007bff';
+          btn.style.boxShadow = `${glowX}px ${glowY}px 15px rgba(0, 123, 255, 0.4)`;
+        } else {
+          btn.style.boxShadow = 'none';
+          btn.style.borderColor = '#333';
+        }
+      });
+    });
+    </script>
+    
+</body>
+</html>
